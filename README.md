@@ -1,9 +1,9 @@
 # Claude Artifact Cabinet
 
-A collection of one-off, static Claude artifacts. Each artifact lives in its own directory with an `index.html`, so GitHub Pages can give it a direct URL.
+A home for assorted one-off Claude artifacts: games, experiments, visualizations, and other small creations.
 
 - [Keep a Light](keep-a-light/)
 
-To add another artifact, create a new directory with an `index.html` and add a link to the root `index.html`.
+Keep each artifact in its own directory. For a web artifact, add an `index.html` so it gets a direct GitHub Pages URL. Add a link to the root `index.html` when you want it listed in the gallery. Other files can live alongside web artifacts in the repository.
 
-GitHub Pages can publish the repository root from the `main` branch. No VPS or build step is needed for these self-contained HTML, CSS, and JavaScript pages.
+GitHub Pages publishes the repository root from `main`. Self-contained HTML, CSS, and JavaScript pages need no VPS or build step.
