@@ -2,6 +2,7 @@
 (() => {
   DG.CATS = {
     force: { name: 'Force outs', color: '#ff8f5a' },
+    double: { name: 'Double plays', color: '#ff7ab8' },
     front: { name: 'Get in front', color: '#3ddc84' },
     deep: { name: 'Play deep', color: '#8ec5ff' },
     cutoff: { name: 'Hit the cutoff', color: '#ffe14d' },
