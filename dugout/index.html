@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07130e">
+<title>Dugout Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" fill="currentColor"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 5v14l10-7zM16.5 5h3v14h-3z" fill="currentColor"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 5v14L9 12zM4.5 5h3v14h-3z" fill="currentColor"/></symbol>
+  <symbol id="i-restart" viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M3 4.5 5.6 10l5.4-2.2z" fill="currentColor"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.2 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z" fill="var(--star-fill, none)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 14 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 10 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">Dugout</span>
+    <span class="brand-sub">8U defense playbook</span>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button id="tab-plays" role="tab" aria-selected="true" data-view="plays">Plays</button>
+    <button id="tab-practice" role="tab" aria-selected="false" data-view="practice">Practice <span id="plan-count" class="count"></span></button>
+  </nav>
+</header>
+
+<main>
+  <section id="view-plays" class="view">
+    <div class="stage-col">
+      <article class="player" id="player">
+        <div class="player-head">
+          <div class="title-block">
+            <span class="cat-tag" id="p-cat"></span>
+            <h1 id="p-title"></h1>
+          </div>
+          <div class="head-actions">
+            <button class="icon-btn" id="p-fav" aria-label="Favorite this play" aria-pressed="false"><svg><use href="#i-star"/></svg></button>
+            <button class="icon-btn" id="p-add" aria-label="Add to practice plan"><svg><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+
+        <div class="sit-row">
+          <div id="p-sit" class="sit"></div>
+          <div class="seg" id="p-variant" role="group" aria-label="Right way or wrong way">
+            <button data-v="right" aria-pressed="true">Do it</button>
+            <button data-v="wrong" aria-pressed="false">Don't</button>
+          </div>
+        </div>
+
+        <div class="field-wrap" id="field-wrap">
+          <svg id="field" viewBox="0 92 360 258" role="img" aria-label="Animated baseball field"></svg>
+          <div class="quiz" id="quiz" hidden>
+            <div class="quiz-card">
+              <span class="quiz-kicker">Freeze! Your call</span>
+              <p class="quiz-q" id="quiz-q"></p>
+              <div class="quiz-opts" id="quiz-opts"></div>
+              <p class="quiz-why" id="quiz-why" hidden></p>
+              <button class="btn-go" id="quiz-go" hidden>Run the play <svg><use href="#i-play"/></svg></button>
+            </div>
+          </div>
+          <div class="wrong-banner" id="wrong-banner" hidden>Wrong way</div>
+        </div>
+
+        <div class="caption" id="caption" aria-live="polite">
+          <span class="step-no" id="step-no">1/1</span>
+          <p id="step-say"></p>
+        </div>
+
+        <div class="scrub">
+          <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Scrub through the play">
+          <div class="ticks" id="ticks"></div>
+        </div>
+
+        <div class="controls">
+          <button class="ctl" id="c-restart" aria-label="Restart"><svg><use href="#i-restart"/></svg></button>
+          <button class="ctl" id="c-prev" aria-label="Previous step"><svg><use href="#i-prev"/></svg></button>
+          <button class="ctl ctl-main" id="c-play" aria-label="Play"><svg><use href="#i-play"/></svg></button>
+          <button class="ctl" id="c-next" aria-label="Next step"><svg><use href="#i-next"/></svg></button>
+          <button class="ctl ctl-speed" id="c-speed" aria-label="Playback speed">1x</button>
+        </div>
+
+        <div class="toggles">
+          <button class="tog" id="t-coach" aria-pressed="true">Pause each step</button>
+          <button class="tog" id="t-routes" aria-pressed="false">Show routes</button>
+          <button class="tog" id="t-quiz" aria-pressed="false">Quiz me</button>
+          <button class="tog" id="t-sound" aria-pressed="false">Sound</button>
+        </div>
+
+        <div class="info">
+          <div class="info-tabs" role="tablist" aria-label="Play details">
+            <button role="tab" aria-selected="true" data-info="cues">Coach cues</button>
+            <button role="tab" aria-selected="false" data-info="jobs">Who does what</button>
+            <button role="tab" aria-selected="false" data-info="notes">My notes</button>
+          </div>
+          <div class="info-pane" id="info-cues"><ul class="cues" id="cues"></ul></div>
+          <div class="info-pane" id="info-jobs" hidden>
+            <div class="pos-grid" id="pos-grid"></div>
+            <p class="job-text" id="job-text">Tap a position (or a player on the field) to see their job.</p>
+          </div>
+          <div class="info-pane" id="info-notes" hidden>
+            <label class="sr" for="notes">Notes for this play</label>
+            <textarea id="notes" rows="4" placeholder="Who needs reps on this? What to say at practice..."></textarea>
+            <span class="saved" id="notes-saved">Saved on this phone</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="lib-col">
+      <div class="lib-head">
+        <h2>Play library</h2>
+        <span id="lib-count" class="lib-count"></span>
+      </div>
+      <label class="sr" for="search">Search plays</label>
+      <input type="search" id="search" class="search" placeholder="Search: cutoff, force, fly ball...">
+      <div class="chips" id="cats" role="group" aria-label="Filter by category"></div>
+      <ol class="lib" id="lib"></ol>
+    </div>
+  </section>
+
+  <section id="view-practice" class="view" hidden>
+    <div class="plan">
+      <div class="plan-head">
+        <label class="sr" for="plan-title">Practice name</label>
+        <input id="plan-title" class="plan-title" value="Next practice">
+        <div class="plan-total"><b id="plan-min">0</b><span>min</span></div>
+      </div>
+      <div class="plan-progress"><div id="plan-bar"></div></div>
+      <ol class="plan-list" id="plan-list"></ol>
+      <p class="plan-empty" id="plan-empty">No plays queued. Tap <b>+</b> on any play to add it here.</p>
+      <form class="plan-add" id="plan-add">
+        <label class="sr" for="drill-text">Add a drill</label>
+        <input id="drill-text" placeholder="Add a drill: throwing lines, tee work...">
+        <button class="btn-go" type="submit"><svg><use href="#i-plus"/></svg>Add</button>
+      </form>
+      <label class="plan-notes-label" for="plan-notes">Practice notes</label>
+      <textarea id="plan-notes" rows="4" placeholder="Stations, helpers, who's catching..."></textarea>
+      <div class="plan-foot">
+        <button class="btn-ghost" id="plan-reset">Uncheck all</button>
+        <button class="btn-ghost danger" id="plan-clear">Clear plan</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="field.js"></script>
+<script src="engine.js"></script>
+<script src="render.js"></script>
+<script src="plays-kit.js"></script>
+<script src="plays-force.js"></script>
+<script src="plays-infield.js"></script>
+<script src="plays-outfield.js"></script>
+<script src="store.js"></script>
+<script src="sfx.js"></script>
+<script src="player.js"></script>
+<script src="library.js"></script>
+<script src="practice.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
