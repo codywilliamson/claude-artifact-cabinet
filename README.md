@@ -3,6 +3,7 @@
 A home for assorted one-off Claude artifacts: games, experiments, visualizations, and other small creations.
 
 - [Keep a Light](keep-a-light/)
+- [Dugout Playbook](dugout/)
 
 Keep each artifact in its own directory. For a web artifact, add an `index.html` so it gets a direct GitHub Pages URL. Add a link to the root `index.html` when you want it listed in the gallery. Other files can live alongside web artifacts in the repository.
 
