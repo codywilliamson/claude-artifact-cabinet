@@ -82,9 +82,10 @@
 
       this.fx = tl.steps.map((s) => {
         for (const [k, m] of Object.entries(s.moves)) {
-          const [x1, y1] = toSvg(s.from[k]);
-          const [x2, y2] = toSvg(m.to);
-          if (Math.hypot(x2 - x1, y2 - y1) > 2) el('line', { class: `route ${DG.isRunner(k) ? 'run' : 'def'}`, x1, y1, x2, y2 }, this.routes[k]);
+          const pts = [s.from[k], ...(m.via || []), m.to].map(toSvg);
+          const [x1, y1] = pts[0];
+          const [x2, y2] = pts[pts.length - 1];
+          if (Math.hypot(x2 - x1, y2 - y1) > 2) el('polyline', { class: `route ${DG.isRunner(k) ? 'run' : 'def'}`, points: pts.join(' ') }, this.routes[k]);
         }
         const fx = {};
         if (s.ball && s.ball.kind !== 'hand') {

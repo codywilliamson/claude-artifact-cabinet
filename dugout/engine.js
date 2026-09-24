@@ -23,14 +23,26 @@
   // runners move at a steady pace across steps, fielders accelerate and settle
   const normMove = (k, v) => {
     const m = v && !Array.isArray(v) && typeof v === 'object' ? v : { to: v };
-    return { to: m.to, at: m.at || [0, 1], lin: m.lin ?? isRunner(k) };
+    return { to: m.to, at: m.at || [0, 1], lin: m.lin ?? isRunner(k), via: m.via };
+  };
+
+  // walk a polyline by arc length so runners round the bases instead of cutting corners
+  const polyAt = (pts, u) => {
+    const segs = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]));
+    let left = u * segs.reduce((a, b) => a + b, 0);
+    for (let i = 0; i < segs.length; i++) {
+      if (left <= segs[i] || i === segs.length - 1) return lerp(pts[i], pts[i + 1], segs[i] ? Math.min(1, left / segs[i]) : 1);
+      left -= segs[i];
+    }
+    return pts[pts.length - 1];
   };
 
   const posAt = (step, k, f) => {
     const m = step.moves[k];
     if (!m) return step.from[k];
     const u = local(f, m.at);
-    return lerp(step.from[k], m.to, m.lin ? u : easeInOut(u));
+    const e = m.lin ? u : easeInOut(u);
+    return m.via ? polyAt([step.from[k], ...m.via, m.to], e) : lerp(step.from[k], m.to, e);
   };
 
   const flight = (b, u) => {
@@ -56,7 +68,7 @@
       const moves = {};
       for (const [k, v] of Object.entries(s.moves || {})) {
         const m = normMove(k, v);
-        moves[k] = { ...m, to: pt(m.to, actors) };
+        moves[k] = { ...m, to: pt(m.to, actors), via: m.via?.map((v) => pt(v, actors)) };
       }
       const step = { ...s, i, start: t, dur: s.d, from: actors, moves, holder: ball.holder, ballPos: ball.pos, ball: null };
       const end = { ...actors };
