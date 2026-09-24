@@ -39,6 +39,7 @@ body {
 button, input, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; padding: 0; }
 :focus-visible { outline: 2px solid var(--optic); outline-offset: 2px; }
+[hidden] { display: none !important; }
 .sprite { display: none; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 svg { flex: none; }
@@ -136,7 +137,6 @@ h1 {
 .outs i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--chalk-3); }
 .outs i.on { background: var(--out); border-color: var(--out); }
 .seg { display: flex; padding: 3px; border-radius: 10px; background: var(--board-2); border: 1px solid var(--line); }
-.seg[hidden] { display: none; }
 .seg button { padding: 6px 12px; border-radius: 7px; font: 700 13px/1 var(--label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--chalk-2); }
 .seg button[aria-pressed="true"][data-v="right"] { background: var(--safe); color: #04210f; }
 .seg button[aria-pressed="true"][data-v="wrong"] { background: var(--out); color: #fff; }
@@ -259,11 +259,9 @@ h1 {
   color: var(--chalk-2);
 }
 .tog[aria-pressed="true"] { background: rgba(255, 225, 77, 0.14); border-color: rgba(255, 225, 77, 0.6); color: var(--optic); }
-.tog[hidden] { display: none; }
 
 /* quiz */
 .quiz { position: absolute; inset: 0; display: grid; place-items: end center; padding: 12px; background: linear-gradient(to top, rgba(4, 12, 8, 0.92) 30%, rgba(4, 12, 8, 0.25)); }
-.quiz[hidden] { display: none; }
 .quiz-card { width: 100%; max-width: 420px; animation: fadeup 0.35s ease both; }
 .quiz-kicker { font: 700 12px/1 var(--label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--off); }
 .quiz-q { margin: 6px 0 10px; font: 19px/1.15 var(--display); }
