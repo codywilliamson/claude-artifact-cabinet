@@ -21,8 +21,8 @@
 
   const showView = (name) => {
     for (const b of document.querySelectorAll('.tabs button')) b.setAttribute('aria-selected', b.dataset.view === name);
-    $('view-plays').hidden = name !== 'plays';
-    $('view-practice').hidden = name !== 'practice';
+    for (const v of document.querySelectorAll('.view')) v.hidden = v.id !== `view-${name}`;
+    if (name !== 'game') DG.game.pause();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -57,6 +57,7 @@
   $('p-fav').addEventListener('click', (e) => fav(DG.player.current().id, e.currentTarget));
   $('p-add').addEventListener('click', (e) => { pop(e.currentTarget); add(DG.player.current().id); });
 
+  DG.openPlay = open;
   DG.library.init({ open, fav, add });
   DG.practice.init({ open });
 

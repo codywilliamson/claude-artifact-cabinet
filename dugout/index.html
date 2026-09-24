@@ -33,6 +33,7 @@
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button id="tab-plays" role="tab" aria-selected="true" data-view="plays">Plays</button>
     <button id="tab-practice" role="tab" aria-selected="false" data-view="practice">Practice <span id="plan-count" class="count"></span></button>
+    <button id="tab-game" role="tab" aria-selected="false" data-view="game">Game</button>
   </nav>
 </header>
 
@@ -153,6 +154,68 @@
       </div>
     </div>
   </section>
+
+  <section id="view-game" class="view" hidden>
+    <div class="game">
+      <div class="game-main">
+        <div class="board-wrap"><table class="board" id="g-board"></table></div>
+        <div class="g-status">
+          <div class="sit" id="g-sit"></div>
+          <div class="g-clock">
+            <span class="g-clock-label">Game clock</span>
+            <b id="g-clock">0:00</b>
+            <div class="g-clock-bar"><i id="g-clock-bar"></i></div>
+          </div>
+        </div>
+        <div class="g-limit" id="g-limit"></div>
+        <div class="field-wrap">
+          <svg id="g-field" role="img" aria-label="Animated game simulation"></svg>
+          <div class="g-final" id="g-final" hidden>
+            <span class="g-final-kicker" id="g-final-reason">Final</span>
+            <b id="g-final-score"></b>
+            <button class="btn-go" id="g-final-new">New game</button>
+          </div>
+        </div>
+        <div class="caption" aria-live="polite">
+          <span class="step-no" id="g-ab">AB</span>
+          <p id="g-say"></p>
+        </div>
+        <button class="learn" id="g-learn" hidden></button>
+        <div class="controls">
+          <button class="ctl" id="g-replay" aria-label="Replay this at-bat"><svg><use href="#i-restart"/></svg></button>
+          <button class="ctl ctl-main" id="g-play" aria-label="Play"><svg><use href="#i-play"/></svg></button>
+          <button class="ctl" id="g-next" aria-label="Next at-bat"><svg><use href="#i-next"/></svg></button>
+          <button class="ctl ctl-speed" id="g-speed" aria-label="Game speed">1x</button>
+        </div>
+        <div class="toggles">
+          <button class="tog" id="g-hold" aria-pressed="false">Pause after each at-bat</button>
+          <button class="tog" id="g-sound" aria-pressed="false">Sound</button>
+          <button class="tog" id="g-skip">Sim to the end</button>
+        </div>
+      </div>
+
+      <div class="game-side">
+        <details class="g-setup" id="g-setup">
+          <summary>Game setup</summary>
+          <form id="g-form" class="g-form">
+            <label>Our team<input id="gs-us" maxlength="18"></label>
+            <label>Opponent<input id="gs-them" maxlength="18"></label>
+            <label>We are<select id="gs-home"><option value="home">Home (bat 2nd)</option><option value="away">Away (bat 1st)</option></select></label>
+            <label>Innings<select id="gs-innings"><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+            <label>Run limit per half<select id="gs-limit"><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="0">None</option></select></label>
+            <label>Time limit<select id="gs-time"><option value="60">1:00</option><option value="75">1:15</option><option value="90">1:30</option><option value="0">None</option></select></label>
+            <label>Our level<select id="gs-us-level"><option value="rookie">Rookie</option><option value="solid">Solid</option><option value="sharp">Sharp</option></select></label>
+            <label>Their level<select id="gs-them-level"><option value="rookie">Rookie</option><option value="solid">Solid</option><option value="sharp">Sharp</option></select></label>
+            <label class="wide">Our batting order <span>one name per line, optional</span><textarea id="gs-roster" rows="4" placeholder="Mason&#10;Eli&#10;Jax"></textarea></label>
+            <p class="g-rule wide">No new inning starts after the time limit. The home team skips its last at-bat if it's already ahead.</p>
+            <button class="btn-go wide" type="submit" id="gs-start">Start new game</button>
+          </form>
+        </details>
+        <div class="lib-head"><h2>Play-by-play</h2><span class="lib-count" id="g-count"></span></div>
+        <ol class="g-log" id="g-log"></ol>
+      </div>
+    </div>
+  </section>
 </main>
 
 <div class="toast" id="toast" role="status"></div>
@@ -170,6 +233,10 @@
 <script src="player.js"></script>
 <script src="library.js"></script>
 <script src="practice.js"></script>
+<script src="sim-rules.js"></script>
+<script src="sim-anim.js"></script>
+<script src="sim-game.js"></script>
+<script src="sim-view.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

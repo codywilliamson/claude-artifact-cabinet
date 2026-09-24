@@ -320,4 +320,5 @@
   });
 
   DG.player = { load, current: () => play };
+  DG.diamondSvg = diamondSvg;
 })();
