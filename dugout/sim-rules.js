@@ -207,7 +207,7 @@
       fates: singleFates(st.bases, cutoffOk ? 0 : 1),
       label: cutoffOk ? `Single to ${OF_NAME[of]}` : `Single to ${OF_NAME[of]}, extra base on the throw`,
       ref: of === 'RF' ? 'cutoff-right' : 'cutoff-left',
-      lesson: cutoffOk ? 'Hit the cutoff and the runners stop.' : 'Skipped the cutoff and gave away a base.',
+      lesson: cutoffOk ? 'Hit the cutoff, keep it moving. Give up the base, not the next one.' : 'Skipped the cutoff and gave away a base.',
     };
   };
 
