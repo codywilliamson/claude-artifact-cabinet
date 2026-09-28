@@ -7,6 +7,7 @@
     deep: { name: 'Play deep', color: '#8ec5ff' },
     cutoff: { name: 'Hit the cutoff', color: '#ffe14d' },
     talk: { name: 'Talk & back up', color: '#e79cff' },
+    oops: { name: 'Drops & backups', color: '#5eead4' },
   };
 
   DG.plays = [];
