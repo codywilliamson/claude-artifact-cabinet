@@ -27,6 +27,7 @@
   const OF_BEHIND = { '3B': 'LF', SS: 'LF', P: 'CF', '2B': 'RF', '1B': 'RF' };
   const SELF_FORCE = 0.35;
   const DOUBLED_OFF = 0.4;
+  const AGGRESSIVE = 0.35; // runners who push for an extra base and force a throw
 
   const chance = (p) => Math.random() < p;
   const weighted = (pairs) => {
@@ -202,13 +203,22 @@
     if (hitType === 'double') return { kind: 'hit', of, hitType, hit: true, fates: advanceAll(st.bases, 4, 2), label: `Double to ${OF_NAME[of]}`, ref: 'gap-talk', lesson: 'Deep outfielders keep balls in front. Hit the relay.' };
     if (hitType === 'hr') return { kind: 'hit', of, hitType, hit: true, fates: advanceAll(st.bases, 4, 4), label: `Inside-the-park home run to ${OF_NAME[of]}`, ref: 'play-deep', lesson: 'Over the head means everybody scores. Play deeper.' };
     const cutoffOk = chance(odds('cutoff'));
-    return {
-      kind: 'hit', of, hitType, hit: true, cutoffOk, error: !cutoffOk,
-      fates: singleFates(st.bases, cutoffOk ? 0 : 1),
-      label: cutoffOk ? `Single to ${OF_NAME[of]}` : `Single to ${OF_NAME[of]}, extra base on the throw`,
-      ref: of === 'RF' ? 'cutoff-right' : 'cutoff-left',
-      lesson: cutoffOk ? 'Hit the cutoff, keep it moving. Give up the base, not the next one.' : 'Skipped the cutoff and gave away a base.',
+    const pushed = chance(AGGRESSIVE);
+    const backedUp = !cutoffOk && chance(odds('backup'));
+    const extra = cutoffOk ? (pushed ? 1 : 0) : backedUp ? 1 : 2;
+    const where = OF_NAME[of];
+    const res = {
+      kind: 'hit', of, hitType, hit: true, cutoffOk, error: !cutoffOk, overthrow: !cutoffOk, backedUp,
+      fates: singleFates(st.bases, extra),
     };
+    if (cutoffOk) {
+      return { ...res, label: pushed ? `Single to ${where}, runners push for an extra base` : `Single to ${where}`,
+        ref: pushed ? 'hustle-first-to-third' : of === 'RF' ? 'cutoff-right' : 'cutoff-left',
+        lesson: pushed ? 'Runners took off and forced a throw. Defense ran it in: gave up a base, not a run.' : 'Hit the cutoff, keep it moving. Give up the base, not the next one.' };
+    }
+    return { ...res, label: backedUp ? `Single to ${where}, throw sails, backed up` : `Single to ${where}, overthrow, extra bases`,
+      ref: backedUp ? 'drop-first-backup' : 'hustle-double-overthrow',
+      lesson: backedUp ? 'Runner forced a throw and it sailed. The backup saved a run: one bad throw is a base.' : 'Runner forced a throw, it sailed, and nobody backed up. One bad throw is a base, two is a run.' };
   };
 
   DG.simRules = {

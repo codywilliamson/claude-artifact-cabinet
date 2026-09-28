@@ -263,9 +263,15 @@
         holder = of;
         if (res.cutoffOk) cutoffThrow(of);
         else {
-          beat(dist(spot, MISSED_THROW) / THROW_FPS + 0.3, { say: `${of} skips the cutoff and throws for third...`, focus: [of], ball: { to: MISSED_THROW, kind: 'throw', h: 14 } });
-          beat(0.9, { say: 'It gets past third! The pitcher was backing up, but the runners take an extra base.', focus: ['P'], ball: { to: 'P', kind: 'roll' }, moves: { P: [-58, 24] } });
-          holder = 'P';
+          beat(dist(spot, MISSED_THROW) / THROW_FPS + 0.3, { say: `Runner forces a throw. ${of} skips the cutoff and fires for third...`, focus: [of], ball: { to: MISSED_THROW, kind: 'throw', h: 14 } });
+          if (res.backedUp) {
+            beat(0.9, { say: 'It sails past third! The pitcher was backing up, so it costs just one extra base.', focus: ['P'], ball: { to: 'P', kind: 'roll' }, moves: { P: [-58, 24] } });
+            holder = 'P';
+          } else {
+            beat(1.2, { say: 'Overthrown! Nobody backing up. It rolls away down the line.', focus: ['3B'], ball: { to: [-92, 44], kind: 'roll' }, moves: { '3B': { to: [-86, 50], at: [0.1, 1] } } });
+            beat(0.7, { say: 'Third baseman chases it down. Runners keep going.', ball: { to: '3B', kind: 'hand', at: [0.4, 1] }, moves: { '3B': [-90, 46] } });
+            holder = '3B';
+          }
         }
       } else {
         const deep = jitter(DEEP_SPOT[of], 5);
