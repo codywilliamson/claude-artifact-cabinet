@@ -8,6 +8,7 @@
     cutoff: { name: 'Hit the cutoff', color: '#ffe14d' },
     talk: { name: 'Talk & back up', color: '#e79cff' },
     oops: { name: 'Drops & backups', color: '#5eead4' },
+    hustle: { name: 'Aggressive runners', color: '#ff5d5d' },
   };
 
   DG.plays = [];
